@@ -1,0 +1,92 @@
+# Block login attmepts
+[apache]
+enabled = true
+port = http,https
+filter = apache-auth
+logpath = /var/log/apache2/*error.log
+          /var/log/apache2/*errors.log
+maxretry = 3
+bantime = 600
+
+
+# Block the remote host that is trying to request suspicious URLs
+[apache-overflows]
+enabled = true
+port = http,https
+filter = apache-overflows
+logpath = /var/log/apache2/*error.log
+          /var/log/apache2/*errors.log
+maxretry = 3
+bantime = 600
+
+
+# Ban the remote host that is trying to search for scripts on the website to execute
+[apache-noscript]
+enabled = true
+port = http,https
+filter = apache-noscript
+logpath = /var/log/apache2/*error.log
+          /var/log/apache2/*errors.log
+maxretry = 3
+bantime = 600
+
+
+# Block the remote host that is trying to request malicious bot
+[apache-badbots]
+enabled = true
+port = http,https
+filter = apache-badbots
+logpath = /var/log/apache2/*error.log
+          /var/log/apache2/*errors.log
+maxretry = 3
+bantime = 600
+
+
+# Block DOS attacks over GET
+[http-get-dos]
+enabled = true
+port = http,https
+filter = http-get-dos
+logpath = /var/log/apache2/*access.log
+maxRetry = 100
+findtime = 300
+bantime = 6000
+
+
+# Block DOS attacks over POST
+[http-post-dos]
+enabled = true
+port = http,https
+filter = http-post-dos
+logpath = /var/log/apache2/*access.log
+maxRetry = 60
+findtime = 300
+bantime = 6000
+
+
+# Block the failed login attempts to SSH server
+[ssh]
+enabled = true
+port = ssh
+filter = sshd
+logpath = /var/log/auth.log
+maxretry = 3
+bantime = 600
+
+
+# Block DDOS on ssh
+[ssh-ddos]
+enabled = true
+port = ssh,sftp
+filter = sshd-ddos
+logpath = /var/log/auth.log
+maxretry = 2
+bantime = 600
+
+# Webmin
+[webmin-auth]
+enabled = true
+port    = 10000
+logpath = %(syslog_authpriv)s
+maxretry = 3
+bantime = 600
