@@ -70,6 +70,19 @@ Be aware that, due to the "enhanced security" recently introduced by Google, you
 ###  fail2ban settings 
 originally from https://gist.github.com/petarnikolovski/e24f9bfda6e1277640e376f8a2ecfaef
 
+
+Use these to check if everything is all right
+```bash
+sudo systemctl restart fail2ban
+sudo fail2ban-client status
+```
+Check iptables with:
+```bash
+sudo iptables -S
+sudo iptables -L
+```
+
+
 Resources:
  * [Rclone Remote setup](https://rclone.org/remote_setup/)
  * [Rclone Drive](https://rclone.org/drive/)
