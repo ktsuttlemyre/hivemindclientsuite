@@ -6,8 +6,23 @@ This script will create an ssh tunnel and log in for interactive remote install
 
 
 ### Use install.sh if you are running from the pi itself
-
-
+Note: if you run this on the pi it is expected that you have a modern browser installed on the pi in order to accept the prompt
+```bash
+rclone config
+...etc
+...etc
+Remote config
+Use web browser to automatically authenticate rclone with remote?
+ * Say Y if the machine running rclone has a web browser you can use
+ * Say N if running rclone on a (remote) machine without web browser access
+If not sure try Y. If Y failed, try N.
+y) Yes
+n) No
+y/n> y
+...etc
+...etc
+```
+otherwise use remote_install to install from a linux computer that supports ssh tunneling
 
 
 ### Manual creation of client/app
