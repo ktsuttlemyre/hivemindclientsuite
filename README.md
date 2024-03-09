@@ -73,3 +73,8 @@ Resources:
  * [Rclone Remote setup](https://rclone.org/remote_setup/)
  * [Rclone Drive](https://rclone.org/drive/)
  * [Rclone own client_id](https://rclone.org/drive/#making-your-own-client-id)
+ * [SSH tunnel rcclone solution](https://nooblinux.com/how-to-connect-rclone-to-google-drive-from-a-remote-server-headless/)
+
+
+
+
