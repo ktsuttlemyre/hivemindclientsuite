@@ -67,7 +67,8 @@ Be aware that, due to the "enhanced security" recently introduced by Google, you
 
 `ssh -L 53682:localhost:53682 -C -N -l hivemind 10.0.0.186`
 
-
+###  fail2ban settings 
+originally from https://gist.github.com/petarnikolovski/e24f9bfda6e1277640e376f8a2ecfaef
 
 Resources:
  * [Rclone Remote setup](https://rclone.org/remote_setup/)
