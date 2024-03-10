@@ -53,8 +53,7 @@ sshpass -p "$password" scp ${pi_config} ${pi_user}@${pi_ip}:${wdir}
 sshpass -p "$password" ssh -L 53682:localhost:53682 -C -N -l $pi_user $pi_ip &
 SSH_TUNNEL_PID=$!
 #open interative session
-sshpass -p "$password" ssh -t ${pi_user}@${pi_ip} "cd ; curl -LkSs 'https://api.github.com/repos/${repo}tarball/' | tar xz --strip=1 -C $wdir
-; cd ${wdir}; bash --init-file ${wdir}install.sh"
+sshpass -p "$password" ssh -t ${pi_user}@${pi_ip} "cd $HOME; curl -LkSs 'https://api.github.com/repos/${repo}tarball/' | tar xz --strip=1 -C $wdir; cd ${wdir}; bash --init-file ${wdir}install.sh"
 password=false
 unset password
 
