@@ -8,23 +8,29 @@ pi_user="$1"
 pi_ip="$2"
 pi_config="$3"
 
+example_config () {
+  echo "example pi.config file below"
+  echo "____________________________"
+  echo "tunnel=false"
+  echo "poll=false"
+  echo "client_id='XXXXX'"
+  echo "client_secret='XXXXX'"
+ echo "‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾"
+}
+
+
 if [ -z "$pi_user" ]; then
   echo "Please provide a Pi username"
   exit 1
 fi
 if [ -z "$pi_ip" ]; then
   echo "Please provide a Pi IP address"
+  example_config
   exit 1
 fi
 if [ -z "$pi_config" ]; then
   echo "Please provide a Pi config file"
-  echo "example file below this line"
-  echo "____________________________"
-  echo "tunnel=false"
-  echo "poll=false"
-  echo "client_id='XXXXX'"
-  echo "client_secret='XXXXX'"
-  echo "‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾"
+  example_config
   exit 1
 elif ! [ -f "$pi_config" ]; then
   echo "Pi config file is not a real file path"
