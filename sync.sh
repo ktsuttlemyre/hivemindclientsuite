@@ -8,6 +8,12 @@ case $direction
     rclone copy ./config.json GoogleDrive:$host_name/
     rclone copy ./nfc-config.json GoogleDrive:$host_name/
     rclone copy ./config.json GoogleDrive:$host_name/
+    cat << EOF > ./rogue_tunnel.env
+tunnel=false
+ssh=false
+poll=false
+EOF
+    rclone copy ./rogue_tunnel.env GoogleDrive:$host_name/
   ;;
   upload )
   
