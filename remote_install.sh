@@ -1,4 +1,5 @@
 #!/bin/bash
+set -ex
 
 project=wdir='kqremotestatsbox'
 repo="ktsuttlemyre/${project}/"
