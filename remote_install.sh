@@ -38,6 +38,11 @@ elif ! [ -f "$pi_config" ]; then
   exit 1
 fi
 
+if ! type sshpass > /dev/null; then
+  echo "installing sshpass"
+  sudo apt install sshpass
+fi
+
 echo -n "Password to log into $pi_ip with user $pi_user"
 read -s password
 echo
