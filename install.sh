@@ -24,4 +24,4 @@ scope = drive.file
 EOF
 
 
-rclone config && echo "Thanks for installing" || echo "There was an error while inistalling"
+rclone config && echo "Thanks for installing" || echo "There was an error while installing"
