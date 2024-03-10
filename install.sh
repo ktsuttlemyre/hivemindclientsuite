@@ -23,5 +23,14 @@ client_secret = $rclone_client_secret
 scope = drive.file
 EOF
 
+#todo suggest changing default password?
+#https://www.cyberciti.biz/faq/where-are-the-passwords-of-the-users-located-in-linux/
+# https://linuxconfig.org/how-to-hash-passwords-on-linux
+#line="$(sudo grep $USER /etc/shadow)"
+#pswd="$(openssl passwd -6 --salt 'salt' 'password')"
+#if sudo grep "$pswd" /etc/shadow; then
+#  echo "you should change your default password"
+#fi
 
-rclone config && echo "Thanks for installing" || echo "There was an error while installing"
+(rclone config && echo "Thanks for installing") || (echo "There was an error while installing; exit 1)"
+
