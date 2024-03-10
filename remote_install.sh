@@ -48,7 +48,7 @@ echo -n "Password to log into $pi_ip with user $pi_user"
 read -s password
 echo
 #download and unzip code
-sshpass -p "$password" ssh ${pi_user}@${pi_ip} "mkdir -p {$wdir}; cd ${wdir}; curl -LkSs 'https://api.github.com/repos/${repo}tarball/' | tar xz --strip=1 -C $wdir;"
+sshpass -p "$password" ssh ${pi_user}@${pi_ip} "mkdir -p ${wdir}; cd ${wdir}; curl -LkSs 'https://api.github.com/repos/${repo}tarball/' | tar xz --strip=1 -C $wdir;"
 #send config
 sshpass -p "$password" scp ${pi_config} ${pi_user}@${pi_ip}:${wdir}
 #open tunnel
