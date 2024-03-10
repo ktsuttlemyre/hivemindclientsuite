@@ -18,6 +18,13 @@ if [ -z "$pi_ip" ]; then
 fi
 if [ -z "$pi_config" ]; then
   echo "Please provide a Pi config file"
+  echo "example file below this line"
+  echo "____________________________"
+  echo "tunnel=false"
+  echo "poll=false"
+  echo "client_id='XXXXX'"
+  echo "client_secret='XXXXX'"
+  echo "‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾"
   exit 1
 else ! [ -f "$pi_config" ]; then
   echo "Pi config file is not a real file path"
