@@ -1,7 +1,7 @@
 #!/bin/bash
 set -ex
 
-project=wdir='kqremotestatsbox'
+project='kqremotestatsbox'
 repo="ktsuttlemyre/${project}/"
 wdir="~/${project}"
 
