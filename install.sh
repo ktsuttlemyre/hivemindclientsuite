@@ -1,6 +1,6 @@
 #!/bin/bash
 
-echo "Installing Rogue OS. Some of the commands will need sudo access. Please grant sudo use."
+echo "Installing. Some of the commands will need sudo access. Please grant sudo use."
 #do a sudo command to get the password out of the way
 sudo echo "Thank you for granting sudo privileges" || exit 1
 
