@@ -41,7 +41,7 @@ fi
 
 if ! type sshpass > /dev/null; then
   echo "installing sshpass"
-  sudo apt install sshpass
+  sudo apt install sshpass -y
 fi
 
 echo -n "Password to log into $pi_ip with user $pi_user"
