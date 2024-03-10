@@ -13,8 +13,9 @@ example_config () {
   echo "____________________________"
   echo "tunnel=false"
   echo "poll=false"
-  echo "client_id='XXXXX'"
-  echo "client_secret='XXXXX'"
+  echo "rclone_root='XXXXX'"
+  echo "rclone_client_id='XXXXX'"
+  echo "rclone_client_secret='XXXXX'"
  echo "‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾"
 }
 
