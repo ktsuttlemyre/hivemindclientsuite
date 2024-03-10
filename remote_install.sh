@@ -26,7 +26,7 @@ if [ -z "$pi_config" ]; then
   echo "client_secret='XXXXX'"
   echo "‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾"
   exit 1
-else ! [ -f "$pi_config" ]; then
+elif ! [ -f "$pi_config" ]; then
   echo "Pi config file is not a real file path"
   exit 1
 fi
