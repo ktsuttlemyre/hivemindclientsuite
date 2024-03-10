@@ -2,7 +2,7 @@
 
 project=wdir='kqremotestatsbox'
 repo="ktsuttlemyre/${project}/"
-wdir="/tmp/${project}"
+wdir="~/${project}"
 
 pi_user="$1"
 pi_ip="$2"
@@ -47,7 +47,7 @@ sshpass -p "$password" scp ${pi_config} ${pi_user}@${pi_ip}:${wdir}
 sshpass -p "$password" ssh -L 53682:localhost:53682 -C -N -l $pi_user $pi_ip &
 SSH_TUNNEL_PID=$!
 #open interative session
-sshpass -p "$password" ssh -t ${pi_user}@${pi_ip} "cd /tmp; curl -LkSs 'https://api.github.com/repos/${repo}tarball/' | tar xz --strip=1 -C $wdir
+sshpass -p "$password" ssh -t ${pi_user}@${pi_ip} "cd ; curl -LkSs 'https://api.github.com/repos/${repo}tarball/' | tar xz --strip=1 -C $wdir
 ; cd ${wdir}; bash --init-file ${wdir}/install.sh"
 password=false
 unset password
