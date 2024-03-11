@@ -23,7 +23,12 @@ prompt() {
           if ! [ -z "$2" ]; then
             echo "Invalid response. Program exiting now"
             exit 1
-          fi;;  
+          fi
+          if ! [ -z "$3" ]; then
+            yn="$3"
+            2="$3"
+          fi
+          ;;  
       esac
   done
 }
@@ -35,12 +40,18 @@ sudo echo "Thank you for granting sudo privileges" || exit 1
 [ -f 'pi.config' ] && source pi.config
 
 #Install
-sudo apt update && sudo apt upgrade
+sudo apt update
+if prompt "Upgrade the system?" $do_upgrade;then 
+  sudo apt upgrade
+fi
 sudo apt install rclone fail2ban -y && sudo apt autoremove
 
-sudo cp -r ./fail2ban /etc/fail2ban
+if prompt "Replace fail2ban configs?" $replace_fail2ban_configs; then
+  sudo cp -r ./fail2ban /etc/fail2ban
+fi
 sudo systemctl restart fail2ban
 
+if prompt "Add rclone configs?" $replace_rclone_configs; then
 cat << EOF > /$HOME/.config/rclone/rclone.conf
 [GoogleDrive]
 type = drive
@@ -48,6 +59,7 @@ client_id = $rclone_client_id
 client_secret = $rclone_client_secret
 scope = drive.file
 EOF
+fi
 
 #todo suggest changing default password?
 #https://www.cyberciti.biz/faq/where-are-the-passwords-of-the-users-located-in-linux/
