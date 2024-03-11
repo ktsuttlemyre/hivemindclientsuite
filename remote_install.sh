@@ -1,5 +1,5 @@
 #!/bin/bash
-set -ex
+#set -ex
 
 pgid="$(ps -o pgid= $$ | grep -o '[0-9]*')"
 trap "trap - SIGTERM && kill -- -${pgid:-$$}" SIGINT SIGTERM EXIT
