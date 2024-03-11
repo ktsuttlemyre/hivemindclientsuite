@@ -1,5 +1,33 @@
 #!/bin/bash
 
+prompt() {
+  message="$1"
+  while true; do
+    if ! [ -z "$2" ]; then
+      yn="$2"
+    else
+      read -p "$message " yn
+    fi
+      case $yn in
+          [Yy][Ee][Ss]* )
+            return ;;
+          [Nn][Oo]* )
+            return 1 ;;
+          [Cc][Aa][Nn][Cc][Ee][Ll]* )
+            return 2 ;;
+          [Ee][Xx][Ii][Tt]* )
+            echo "user exit"
+            exit 0 ;;
+          * )
+          echo "Please answer yes,no,cancel or exit."
+          if ! [ -z "$2" ]; then
+            echo "Invalid response. Program exiting now"
+            exit 1
+          fi;;  
+      esac
+  done
+}
+
 echo "Installing. Some of the commands will need sudo access. Please grant sudo use."
 #do a sudo command to get the password out of the way
 sudo echo "Thank you for granting sudo privileges" || exit 1
@@ -28,5 +56,12 @@ EOF
 #  echo "you should change your default password"
 #fi
 
-(rclone config && echo "Thanks for installing") || (echo "There was an error while installing; exit 1")
-
+if rclone config; then
+  echo "Thanks for installing"
+  prompt ! "Do you wish to remain connected to the remote?"; then
+    exit 0
+  fi
+else
+  echo "There was an error while installing";
+  exit 1
+fi
