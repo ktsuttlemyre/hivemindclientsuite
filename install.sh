@@ -60,7 +60,7 @@ EOF
 
 if rclone config; then
   echo "Thanks for installing"
-  if prompt ! "Do you wish to remain connected to the remote?"; then
+  if ! prompt "Do you wish to remain connected to the remote?"; then
     exit 0
   fi
 else
