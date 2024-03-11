@@ -32,7 +32,7 @@ echo "Installing. Some of the commands will need sudo access. Please grant sudo 
 #do a sudo command to get the password out of the way
 sudo echo "Thank you for granting sudo privileges" || exit 1
 
-source pi.config
+[ -f 'pi.config' ] && source pi.config
 
 #Install
 sudo apt update && sudo apt upgrade
