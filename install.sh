@@ -41,7 +41,7 @@ sudo apt install rclone fail2ban -y && sudo apt autoremove
 sudo cp -r ./fail2ban /etc/fail2ban
 sudo systemctl restart fail2ban
 
-cat << EOF > /$HOME/.config/rclone.conf
+cat << EOF > /$HOME/.config/rclone/rclone.conf
 [GoogleDrive]
 type = drive
 client_id = $rclone_client_id
