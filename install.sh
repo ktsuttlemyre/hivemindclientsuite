@@ -36,7 +36,7 @@ source pi.config
 
 sudo apt install rclone fail2ban -y
 #Install
-cp ./fail2ban /etc/fail2ban
+cp -r ./fail2ban /etc/fail2ban
 sudo systemctl restart fail2ban
 
 cat << EOF > /$HOME/.config/rclone.conf
@@ -58,7 +58,7 @@ EOF
 
 if rclone config; then
   echo "Thanks for installing"
-  prompt ! "Do you wish to remain connected to the remote?"; then
+  if prompt ! "Do you wish to remain connected to the remote?"; then
     exit 0
   fi
 else
