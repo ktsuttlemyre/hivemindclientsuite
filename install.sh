@@ -32,5 +32,5 @@ EOF
 #  echo "you should change your default password"
 #fi
 
-(rclone config && echo "Thanks for installing") || (echo "There was an error while installing; exit 1)"
+(rclone config && echo "Thanks for installing") || (echo "There was an error while installing; exit 1")
 
