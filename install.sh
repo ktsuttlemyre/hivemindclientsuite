@@ -34,8 +34,10 @@ sudo echo "Thank you for granting sudo privileges" || exit 1
 
 source pi.config
 
-sudo apt install rclone fail2ban -y
 #Install
+sudo apt update && sudo apt upgrade
+sudo apt install rclone fail2ban -y && sudo apt autoremove
+
 sudo cp -r ./fail2ban /etc/fail2ban
 sudo systemctl restart fail2ban
 
