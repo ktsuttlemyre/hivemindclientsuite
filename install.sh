@@ -36,7 +36,7 @@ source pi.config
 
 sudo apt install rclone fail2ban -y
 #Install
-cp -r ./fail2ban /etc/fail2ban
+sudo cp -r ./fail2ban /etc/fail2ban
 sudo systemctl restart fail2ban
 
 cat << EOF > /$HOME/.config/rclone.conf
