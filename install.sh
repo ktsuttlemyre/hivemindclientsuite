@@ -51,6 +51,9 @@ if prompt "Replace fail2ban configs?" $replace_fail2ban_configs; then
 fi
 sudo systemctl restart fail2ban
 
+#save env vars
+echo -e "tunnel=$tunnel\npoll=$poll\nrclone_root=$rclone_root" > .env
+
 if prompt "Add rclone configs?" $replace_rclone_configs; then
   env envsubst < ./templates/rclone.conf.tmpl > /$HOME/.config/rclone/rclone.conf
 fi
