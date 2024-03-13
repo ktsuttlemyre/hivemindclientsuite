@@ -1,25 +1,26 @@
 #!/bin/bash
 
-host_name="crescentblue"
+
+source ~/remotestatsbox/.env
 
 direction="$1"
 case $direction
   init )
-    rclone copy ./config.json GoogleDrive:$host_name/
-    rclone copy ./nfc-config.json GoogleDrive:$host_name/
-    rclone copy ./config.json GoogleDrive:$host_name/
+    rclone copy ./config.json GoogleDrive:$rclone_root/
+    rclone copy ./nfc-config.json GoogleDrive:$rclone_root/
+    rclone copy ./config.json GoogleDrive:$rclone_root/
     cat << EOF > ./rogue_tunnel.env
 tunnel=false
 ssh=false
 poll=false
 EOF
-    rclone copy ./rogue_tunnel.env GoogleDrive:$host_name/
+    rclone copy ./rogue_tunnel.env GoogleDrive:$rclone_root/
   ;;
   upload )
-    rclone sync ~/ GoogleDrive:$host_name --exclude node_modules
+    rclone sync ~/ GoogleDrive:$rclone_root --exclude node_modules
   ;;
   download )
-  if rclone sync GoogleDrive:$host_name ~/ --exclude node_modules; then #if 0 successful and files changed, 9 is successfull no file change
+  if rclone sync GoogleDrive:$rclone_root ~/ --exclude node_modules; then #if 0 successful and files changed, 9 is successfull no file change
     sudo systemctl restart hivemind-client
     sudo systemctl restart hivemind-nfc-reader
     sudo cp ~/wpa_supplicant /boot/
@@ -28,9 +29,9 @@ EOF
   ;;
   status_up ) 
     ip addr > ip.txt
-    rclone copy ./ip.txt GoogleDrive:$host_name/
+    rclone copy ./ip.txt GoogleDrive:$rclone_root/
     date > date.txt
-    rclone copy ./ip.txt GoogleDrive:$host_name/
+    rclone copy ./ip.txt GoogleDrive:$rclone_root/
   ;;
 esac
 
