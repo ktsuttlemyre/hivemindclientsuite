@@ -52,8 +52,30 @@ fi
 sudo systemctl restart fail2ban
 
 if prompt "Add rclone configs?" $replace_rclone_configs; then
-  env envsubst < ./templates/rclone.conf.tpl > /$HOME/.config/rclone/rclone.conf
+  env envsubst < ./templates/rclone.conf.tmpl > /$HOME/.config/rclone/rclone.conf
 fi
+ 
+systemd_dir='/lib/systemd/system/'
+[ ! -d $systemd_dir ] && systemd_dir='/etc/systemd/system/'
+
+# https://medium.com/horrible-hacks/using-systemd-as-a-better-cron-a4023eea996d
+#add rclone sync commands to systemd
+Description='Sync via rclone' \
+Wants='rclone-sync.timer' \
+ExecStart='~/kqremotestatsbox/sync.sh ' \
+WorkingDirectory='~/kqremotestatsbox' \
+User=$USER \
+env envsubst < ./templates/general.service.tmpl > ${systemd_dir}rclone-sync.service;
+Description='Run Rclone sync every n minutes' \
+Requires='rclone-sync.service' \
+Unit='rclone-sync.service' \
+Timer='${poll:-30m}' \
+env envsubst < ./templates/general.timer.tmpl > ${systemd_dir}rclone-sync.timer;
+
+#systemctl stop
+systemctl daemon-reload
+systemctl enable rclone-sync.timer rclone-sync.service
+systemctl start rclone-sync.timer rclone-sync.service
 
 #todo suggest changing default password?
 #https://www.cyberciti.biz/faq/where-are-the-passwords-of-the-users-located-in-linux/
