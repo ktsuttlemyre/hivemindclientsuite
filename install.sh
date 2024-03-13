@@ -89,7 +89,9 @@ systemctl start rclone-sync.timer rclone-sync.service
 #  echo "you should change your default password"
 #fi
 
-if rclone config; then
+rclone config
+
+if ./sync.sh init; then 
   echo "Thanks for installing"
   if ! prompt "Do you wish to remain connected to the remote?"; then
     exit 0
