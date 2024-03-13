@@ -52,13 +52,7 @@ fi
 sudo systemctl restart fail2ban
 
 if prompt "Add rclone configs?" $replace_rclone_configs; then
-cat << EOF > /$HOME/.config/rclone/rclone.conf
-[GoogleDrive]
-type = drive
-client_id = $rclone_client_id
-client_secret = $rclone_client_secret
-scope = drive.file
-EOF
+  env envsubst < ./templates/rclone.conf.tpl > /$HOME/.config/rclone/rclone.conf
 fi
 
 #todo suggest changing default password?
