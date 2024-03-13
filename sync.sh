@@ -16,9 +16,14 @@ EOF
     rclone copy ./rogue_tunnel.env GoogleDrive:$host_name/
   ;;
   upload )
-  
+    rclone sync ~/ GoogleDrive:$host_name --exclude node_modules
   ;;
   download )
+  if rclone sync GoogleDrive:$host_name ~/ --exclude node_modules; then #if 0 successful and files changed, 9 is successfull no file change
+    sudo systemctl restart hivemind-client
+    sudo systemctl restart hivemind-nfc-reader
+    sudo cp ~/wpa_supplicant /boot/
+  fi
 
   ;;
   status_up ) 
