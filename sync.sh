@@ -6,15 +6,7 @@ source ~/remotestatsbox/.env
 direction="$1"
 case $direction
   init )
-    rclone copy ./config.json GoogleDrive:$rclone_root/
-    rclone copy ./nfc-config.json GoogleDrive:$rclone_root/
-    rclone copy ./config.json GoogleDrive:$rclone_root/
-    cat << EOF > ./rogue_tunnel.env
-tunnel=false
-ssh=false
-poll=false
-EOF
-    rclone copy ./rogue_tunnel.env GoogleDrive:$rclone_root/
+    rclone bisync $HOME GoogleDrive:$rclone_root/ --resync, --resync-mode newer
   ;;
   upload )
     rclone sync ~/ GoogleDrive:$rclone_root --exclude node_modules
@@ -27,28 +19,36 @@ EOF
   fi
 
   ;;
-  status_up ) 
-    ip addr > ip.txt
-    rclone copy ./ip.txt GoogleDrive:$rclone_root/
+  status_up )
+    if [ -f ./command.txt ] && [ -s ./command.txt ]; then
+      echo "> $(cat ./command.txt)" > command_output.txt
+      bash ./command.txt >> command_output.txt
+      echo "" > command.txt
+    fi
+    
+    curl -s ipinfo.io > ipinfo.io
+    traceroute google.com > traceroute.txt
+    
+    #get external ip
+    declare -a cmd=('curl -s -4 icanhazip.com' \
+      'curl -s ifconfig.me' \
+      'curl -s api.ipify.org' \
+      'curl -s bot.whatismyipaddress.com' \
+      'curl -s ipinfo.io/ip' \
+      'curl -s ipecho.net/plain')
+    ip=''
+    for i in "${cmd[@]}"; do
+      ip=$($i)
+      if ! [ -z "$ip" ]; then
+        break
+      fi
+    done
+    echo "$ip" > ip_public.txt
+
+    ifconfig >  ifconfig.txt
+    sudo iwlist wlan0 scan > iwlist.txt
+    ip route | grep -Eo '([0-9]*\.){3}[0-9]*' | sed "2q;d" > ip_private.txt
     date > date.txt
-    rclone copy ./ip.txt GoogleDrive:$rclone_root/
   ;;
 esac
 
-
-## declare an array variable
-declare -a cmd=('curl -4 icanhazip.com' \
-  'curl ifconfig.me' \ 
-  'curl api.ipify.org' \ 
-  'curl bot.whatismyipaddress.com' \ 
-  'curl ipinfo.io/ip' \ 
-  'curl ipecho.net/plain')
-
-
-## now loop through the above array
-for i in "${cmd[@]}"; then
-  ip=$(i)
-  if [ -z "$ip" ]; then
-    continue
-  fi
-end
