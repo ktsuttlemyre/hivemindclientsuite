@@ -52,7 +52,7 @@ fi
 sudo systemctl restart fail2ban
 
 #save env vars
-env | grep '^tunnel=\|^poll=\|^rclone_root=' > .env
+env | grep '^\(tunnel\|poll\|rclone_root\)=' > .env
 
 if prompt "Add rclone configs?" $replace_rclone_configs; then
   env envsubst < ./templates/rclone.conf.tmpl > /$HOME/.config/rclone/rclone.conf
