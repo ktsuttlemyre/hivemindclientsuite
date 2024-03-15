@@ -3,10 +3,18 @@
 
 source ~/remotestatsbox/.env
 
+SEP="$(printf '%0.s-' {1..10})
+DATE="$(TZ=EST date)"
+HR="$SEP $DATE $SEP"
+
 direction="$1"
 case $direction
   init )
-    rclone bisync $HOME GoogleDrive:$rclone_root/ --resync, --resync-mode newer
+    echo "$HR" >> rclone.log
+    rclone bisync $HOME GoogleDrive:$rclone_root/ --resync --exclude ${project} --resync-mode newer --create-empty-src-dirs --slow-hash-sync-only --resilient -Mv --drive-skip-gdocs --fix-case >> rclone.log
+  ;;
+  sync )
+    rclone --resilient --recover --max-lock 2m --conflict-resolve newer
   ;;
   upload )
     rclone sync ~/ GoogleDrive:$rclone_root --exclude node_modules
@@ -21,7 +29,8 @@ case $direction
   ;;
   status_up )
     if [ -f ./command.txt ] && [ -s ./command.txt ]; then
-      echo "> $(cat ./command.txt)" > command_output.txt
+      echo "$HR" >> command_output.txt
+      echo "> $(cat ./command.txt)" >> command_output.txt
       bash ./command.txt >> command_output.txt
       echo "" > command.txt
     fi
@@ -48,7 +57,7 @@ case $direction
     ifconfig >  ifconfig.txt
     sudo iwlist wlan0 scan > iwlist.txt
     ip route | grep -Eo '([0-9]*\.){3}[0-9]*' | sed "2q;d" > ip_private.txt
-    date > date.txt
+    echo "$DATE" > date.txt
   ;;
 esac
 
