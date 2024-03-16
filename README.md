@@ -1,4 +1,4 @@
-# kqremotestatsbox
+# hivemindclientsuite
 
 ### Prerequesits
 #example pi.config file below
@@ -15,7 +15,7 @@ Create a client id here [Rclone own client_id](https://rclone.org/drive/#making-
 Example:
 username ipaddress location of pi.config (env) file
 ```bash
-bash <(curl -s https://raw.githubusercontent.com/ktsuttlemyre/kqremotestatsbox/master/remote_install.sh) hivemind 10.0.0.186 pi.config```
+bash <(curl -s https://raw.githubusercontent.com/ktsuttlemyre/hivemindclientsuite/master/remote_install.sh) hivemind 10.0.0.186 pi.config```
 `
 #### About
 This script will create an ssh tunnel to portforward `53682` use during the rclone `auto config` step. This allows the host browser to authenticate and log in for interactive remote install. This will set up the rpi with install files
