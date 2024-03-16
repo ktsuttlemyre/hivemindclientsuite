@@ -1,6 +1,7 @@
 #!/bin/bash
 #set -ex
 
+#set cleanup trigger
 pgid="$(ps -o pgid= $$ | grep -o '[0-9]*')"
 trap "trap - SIGTERM && kill -- -${pgid:-$$}" SIGINT SIGTERM EXIT
 
@@ -55,13 +56,16 @@ echo
 sshpass -p "$password" ssh ${pi_user}@${pi_ip} "mkdir -p ${wdir}; cd ${wdir}; curl -LkSs 'https://api.github.com/repos/${repo}tarball/' | tar xz --strip=1 -C $wdir;"
 #send config
 #sshpass -p "$password" scp ${pi_config} ${pi_user}@${pi_ip}:${wdir}
+
 #open tunnel
+args="$(xargs echo -n < ${pi_config}) $(env | grep '^\(wdir\|project\|repo\)=' )"
+
 sshpass -p "$password" ssh -L 53682:localhost:53682 -C -N -l $pi_user $pi_ip &
-SSH_TUNNEL_PID=$!
-#open interative session
-sshpass -p "$password" ssh -t ${pi_user}@${pi_ip} "cd ${wdir}; $(xargs echo -n < ${pi_config}) bash --init-file ${wdir}install.sh"
+ssh -f -L 53682:localhost:53682 -C -N -l $pi_user $pi_ip sleep 10; \
+          sshpass -p "$password" ssh -t ${pi_user}@${pi_ip} "cd ${wdir}; $args bash --init-file ${wdir}install.sh"
+
+#clean up
 password=false
 unset password
-
 kill $SSH_TUNNEL_PID
 
