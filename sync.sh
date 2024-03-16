@@ -1,5 +1,11 @@
 #!/bin/bash
 
+source ~/remotestatsbox/.env
+
+SEP="$(printf '%0.s-' {1..10})"
+DATE="$(TZ=EST date)"
+HR="$SEP $DATE $SEP"
+
 to_log () {
   file="$1"
   echo "$HR" >> $file
@@ -12,12 +18,6 @@ trunk () {
   size="${2-1000000}"
   echo "$(tail -c $size $file)" > $file
 }
-
-source ~/remotestatsbox/.env
-
-SEP="$(printf '%0.s-' {1..10})"
-DATE="$(TZ=EST date)"
-HR="$SEP $DATE $SEP"
 
 direction="$1"
 case $direction
