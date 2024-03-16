@@ -91,6 +91,7 @@ sudo systemctl start rclone-sync.timer rclone-sync.service
 
 rclone config
 
+sudo chmod +x ./sync.sh
 if ./sync.sh init; then 
   echo "Thanks for installing"
   if ! prompt "Do you wish to remain connected to the remote?"; then
