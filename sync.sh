@@ -1,6 +1,9 @@
 #!/bin/bash
 
-source ~/remotestatsbox/.env
+#force home
+cd $HOME
+
+source ~/kqremotestatsbox/.env
 
 SEP="$(printf '%0.s-' {1..10})"
 DATE="$(TZ=EST date)"
