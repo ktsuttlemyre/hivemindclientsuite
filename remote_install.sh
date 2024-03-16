@@ -2,6 +2,7 @@
 #set -ex
 
 #set cleanup trigger
+#https://stackoverflow.com/questions/360201/how-do-i-kill-background-processes-jobs-when-my-shell-script-exits
 pgid="$(ps -o pgid= $$ | grep -o '[0-9]*')"
 trap "trap - SIGTERM && kill -- -${pgid:-$$}" SIGINT SIGTERM EXIT
 
@@ -66,5 +67,4 @@ sshpass -p "$password" ssh -f -L 53682:localhost:53682 -C -N -l $pi_user $pi_ip 
 #clean up
 password=false
 unset password
-kill $SSH_TUNNEL_PID
 
