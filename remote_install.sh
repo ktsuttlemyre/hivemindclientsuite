@@ -57,11 +57,10 @@ sshpass -p "$password" ssh ${pi_user}@${pi_ip} "mkdir -p ${wdir}; cd ${wdir}; cu
 #send config
 #sshpass -p "$password" scp ${pi_config} ${pi_user}@${pi_ip}:${wdir}
 
-#open tunnel
+#open tunnel and connect to it at the same time so the tunnel will close when our ssh session finishes
 args="$(xargs echo -n < ${pi_config}) $(env | grep '^\(wdir\|project\|repo\)=' )"
-
-sshpass -p "$password" ssh -L 53682:localhost:53682 -C -N -l $pi_user $pi_ip &
-ssh -f -L 53682:localhost:53682 -C -N -l $pi_user $pi_ip sleep 10; \
+#https://unix.stackexchange.com/questions/83806/how-to-kill-ssh-session-that-was-started-with-the-f-option-run-in-background
+sshpass -p "$password" ssh -f -L 53682:localhost:53682 -C -N -l $pi_user $pi_ip sleep 10; \
           sshpass -p "$password" ssh -t ${pi_user}@${pi_ip} "cd ${wdir}; $args bash --init-file ${wdir}install.sh"
 
 #clean up
