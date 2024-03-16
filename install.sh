@@ -74,7 +74,7 @@ sudo mv rclone-sync.service ${systemd_dir}rclone-sync.service;
 Description='Run Rclone sync every n minutes' \
 Requires='rclone-sync.service' \
 Unit='rclone-sync.service' \
-Timer='${poll:-30m}' \
+Timer="${poll:-30m}" \
 env envsubst < ./templates/general.timer.tmpl > rclone-sync.timer;
 sudo mv rclone-sync.timer ${systemd_dir}rclone-sync.timer;
 
