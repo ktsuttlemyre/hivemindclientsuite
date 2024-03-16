@@ -52,7 +52,7 @@ fi
 sudo systemctl restart fail2ban
 
 #save env vars
-env | grep '^\(tunnel\|poll\|rclone_root\)=' > .env
+env | grep '^\(tunnel\|poll\|rclone_root\|project\|wdir\|repo\)=' > .env
 
 if prompt "Add rclone configs?" $replace_rclone_configs; then
   env envsubst < ./templates/rclone.conf.tmpl > /$HOME/.config/rclone/rclone.conf
@@ -65,8 +65,8 @@ systemd_dir='/lib/systemd/system/'
 #add rclone sync commands to systemd
 Description='Sync via rclone' \
 Wants='rclone-sync.timer' \
-ExecStart='~/kqremotestatsbox/sync.sh ' \
-WorkingDirectory='~/kqremotestatsbox' \
+ExecStart="${wdir}sync.sh" \
+WorkingDirectory="${wdir}" \
 User=$USER \
 env envsubst < ./templates/general.service.tmpl > rclone-sync.service;
 sudo mv rclone-sync.service ${systemd_dir}rclone-sync.service;
@@ -94,8 +94,10 @@ sudo systemctl start rclone-sync.timer rclone-sync.service
 
 rclone config
 
-sudo chmod +x ./sync.sh
-if ./sync.sh init; then 
+cd $HOME
+
+sudo chmod +x ${wdir}sync.sh
+if ${wdir}sync.sh init; then 
   echo "Thanks for installing"
   if ! prompt "Do you wish to remain connected to the remote?"; then
     exit 0
