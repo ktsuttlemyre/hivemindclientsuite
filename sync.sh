@@ -3,7 +3,7 @@
 #force home
 cd $HOME
 
-source ~/kqremotestatsbox/.env
+source ~/hivemindclientsuite/.env
 
 SEP="$(printf '%0.s-' {1..10})"
 DATE="$(TZ=EST date)"
