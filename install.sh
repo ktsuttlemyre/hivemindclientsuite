@@ -76,9 +76,9 @@ Timer='${poll:-30m}' \
 env envsubst < ./templates/general.timer.tmpl > ${systemd_dir}rclone-sync.timer;
 
 #systemctl stop
-systemctl daemon-reload
-systemctl enable rclone-sync.timer rclone-sync.service
-systemctl start rclone-sync.timer rclone-sync.service
+sudo systemctl daemon-reload
+sudo systemctl enable rclone-sync.timer rclone-sync.service
+sudo systemctl start rclone-sync.timer rclone-sync.service
 
 #todo suggest changing default password?
 #https://www.cyberciti.biz/faq/where-are-the-passwords-of-the-users-located-in-linux/
