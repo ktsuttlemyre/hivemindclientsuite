@@ -1,9 +1,21 @@
 #!/bin/bash
 
+to_log () {
+  file="$1"
+  echo "$HR" >> $file
+  cat - >> $file
+  trunk $file
+}
+
+trunk () {
+  file="$1"
+  size="${2-1000000}"
+  echo "$(tail -c $size $file)" > $file
+}
 
 source ~/remotestatsbox/.env
 
-SEP="$(printf '%0.s-' {1..10})
+SEP="$(printf '%0.s-' {1..10})"
 DATE="$(TZ=EST date)"
 HR="$SEP $DATE $SEP"
 
@@ -28,15 +40,15 @@ case $direction
 
   ;;
   status_up )
-    if [ -f ./command.txt ] && [ -s ./command.txt ]; then
-      echo "$HR" >> command_output.txt
-      echo "> $(cat ./command.txt)" >> command_output.txt
-      bash ./command.txt >> command_output.txt
-      echo "" > command.txt
+    file=./command.txt
+    if [ -f $file ] && [ -s $file ]; then
+      echo "> $(cat $file)" | to_log ./command.output.txt
+      bash $file | to_log ./command.output.txt
+      echo "" > $file
     fi
-    
-    curl -s ipinfo.io > ipinfo.io
-    traceroute google.com > traceroute.txt
+
+    curl -s ipinfo.io | to_log ipinfo.io
+    traceroute google.com | to_log traceroute.txt
     
     #get external ip
     declare -a cmd=('curl -s -4 icanhazip.com' \
@@ -52,12 +64,12 @@ case $direction
         break
       fi
     done
-    echo "$ip" > ip_public.txt
+    echo "$ip" | to_log ip_public.txt
 
-    ifconfig >  ifconfig.txt
-    sudo iwlist wlan0 scan > iwlist.txt
-    ip route | grep -Eo '([0-9]*\.){3}[0-9]*' | sed "2q;d" > ip_private.txt
-    echo "$DATE" > date.txt
+    ifconfig | to_log ifconfig.txt
+    sudo iwlist wlan0 scan | to_log iwlist.txt
+    ip route | grep -Eo '([0-9]*\.){3}[0-9]*' | sed "2q;d" | to_log ip_private.txt
+    echo "$DATE" | to_log sync_ran.txt
   ;;
 esac
 
