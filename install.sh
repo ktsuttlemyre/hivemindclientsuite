@@ -68,12 +68,15 @@ Wants='rclone-sync.timer' \
 ExecStart='~/kqremotestatsbox/sync.sh ' \
 WorkingDirectory='~/kqremotestatsbox' \
 User=$USER \
-env envsubst < ./templates/general.service.tmpl > ${systemd_dir}rclone-sync.service;
+env envsubst < ./templates/general.service.tmpl > rclone-sync.service;
+sudo mv rclone-sync.service ${systemd_dir}rclone-sync.service;
+
 Description='Run Rclone sync every n minutes' \
 Requires='rclone-sync.service' \
 Unit='rclone-sync.service' \
 Timer='${poll:-30m}' \
-env envsubst < ./templates/general.timer.tmpl > ${systemd_dir}rclone-sync.timer;
+env envsubst < ./templates/general.timer.tmpl > rclone-sync.timer;
+sudo mv rclone-sync.timer ${systemd_dir}rclone-sync.timer;
 
 #systemctl stop
 sudo systemctl daemon-reload
