@@ -86,11 +86,17 @@ sudo systemctl start rclone-sync.timer rclone-sync.service
 #todo suggest changing default password?
 #https://www.cyberciti.biz/faq/where-are-the-passwords-of-the-users-located-in-linux/
 # https://linuxconfig.org/how-to-hash-passwords-on-linux
-#line="$(sudo grep $USER /etc/shadow)"
-#pswd="$(openssl passwd -6 --salt 'salt' 'password')"
-#if sudo grep "$pswd" /etc/shadow; then
-#  echo "you should change your default password"
-#fi
+line="$(sudo grep $USER /etc/shadow)"
+alg="$(echo $line | cut -f2 -d '$')"
+salt="$(echo $line | cut -f3 -d '$')"
+hash="$(echo $line | cut -f4 -d '$' | cut -f1 -d ':')"
+test="$(openssl passwd -$alg --salt $salt HiveMind123 | cut -f4 -d '$')"
+if [ "$hash" = "$test" ];  then
+  echo "you should change the default password"
+  if prompt "would you like to do that now?"; then
+    passwd
+  fi
+fi
 
 rclone config
 
