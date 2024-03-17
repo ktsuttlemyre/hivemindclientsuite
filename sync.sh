@@ -23,7 +23,7 @@ trunk () {
 }
 
 direction="$1"
-case $direction
+case $direction in
   init )
     echo "$HR" >> rclone.log
     rclone bisync $HOME GoogleDrive:$rclone_root/ --resync --exclude ${project} --resync-mode newer --create-empty-src-dirs --slow-hash-sync-only --resilient -Mv --drive-skip-gdocs --fix-case >> rclone.log
@@ -73,6 +73,9 @@ case $direction
     sudo iwlist wlan0 scan | to_log iwlist.txt
     ip route | grep -Eo '([0-9]*\.){3}[0-9]*' | sed "2q;d" | to_log ip_private.txt
     echo "$DATE" | to_log sync_ran.txt
+  ;;
+  * )
+    echo "unknkown direction $direction"
   ;;
 esac
 
