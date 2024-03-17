@@ -46,7 +46,10 @@ if prompt "Upgrade the system?" $do_upgrade;then
 fi
 
 sudo apt install fail2ban -y && sudo apt autoremove
-sudo -v ; curl https://rclone.org/install.sh | sudo bash
+
+if ! type rclone > /dev/null; the
+  sudo -v ; curl https://rclone.org/install.sh | sudo bash
+fi
 
 if prompt "Replace fail2ban configs?" $replace_fail2ban_configs; then
   sudo cp -r ./fail2ban /etc/fail2ban
