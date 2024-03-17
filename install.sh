@@ -45,9 +45,9 @@ if prompt "Upgrade the system?" $do_upgrade;then
   sudo apt upgrade
 fi
 
-sudo apt install fail2ban -y && sudo apt autoremove
+sudo apt install unattended-upgrades fail2ban -y && sudo apt autoremove
 
-if ! type rclone > /dev/null; the
+if ! type rclone > /dev/null; then
   sudo -v ; curl https://rclone.org/install.sh | sudo bash
 fi
 
