@@ -106,7 +106,7 @@ fi
 rclone config
 
 cd $HOME
-
+rclone mkdir GoogleDrive:${rclone_root}
 sudo chmod +x ${wdir}sync.sh
 if ${wdir}sync.sh init; then 
   echo "Thanks for installing"
