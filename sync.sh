@@ -25,24 +25,26 @@ trunk () {
 direction="$1"
 case $direction in
   init )
-    echo "$HR" >> rclone.log
-    rclone bisync $HOME GoogleDrive:$rclone_root/ --resync --exclude ${project} --resync-mode newer --create-empty-src-dirs --slow-hash-sync-only --resilient -Mv --drive-skip-gdocs --fix-case >> rclone.log
+    rclone bisync $HOME GoogleDrive:$rclone_root/ --exclude ${wdir} --resync --resync-mode newer --create-empty-src-dirs --slow-hash-sync-only --resilient -Mv --drive-skip-gdocs --fix-case | to_log rclone.log
   ;;
   sync )
-    rclone --resilient --recover --max-lock 2m --conflict-resolve newer
+    ./sync.sh status
+    rclone bisync $HOME GoogleDrive:${rclone_root}/ --exclude ${wdir} --resilient --recover --max-lock 2m --conflict-resolve newer | to_log rclone.log
   ;;
   upload )
-    rclone sync ~/ GoogleDrive:$rclone_root --exclude node_modules
+    rclone sync ~/ GoogleDrive:$rclone_root --exclude node_modules | to_log rclone.log
   ;;
   download )
   if rclone sync GoogleDrive:$rclone_root ~/ --exclude node_modules; then #if 0 successful and files changed, 9 is successfull no file change
+    ./sync.sh restart
+  fi
+  ;;
+  restart )
     sudo systemctl restart hivemind-client
     sudo systemctl restart hivemind-nfc-reader
     sudo cp ~/wpa_supplicant /boot/
-  fi
-
   ;;
-  status_up )
+  status )
     file=./command.txt
     if [ -f $file ] && [ -s $file ]; then
       echo "> $(cat $file)" | to_log ./command.output.txt
