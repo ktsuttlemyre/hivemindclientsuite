@@ -70,7 +70,7 @@ systemd_dir='/lib/systemd/system/'
 #add rclone sync commands to systemd
 Description='Sync via rclone' \
 Wants='rclone-sync.timer' \
-ExecStart="${wdir}sync.sh" \
+ExecStart="${wdir}sync.sh sync" \
 WorkingDirectory="${wdir}" \
 User=$USER \
 env envsubst < ./templates/general.service.tmpl > rclone-sync.service;
