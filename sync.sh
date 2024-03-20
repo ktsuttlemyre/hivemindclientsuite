@@ -21,7 +21,7 @@ trunk () {
   size="${2-1000000}"
   echo "$(tail -c $size $file)" > $file
 }
-excludes="${project} node_modules"
+excludes="./${project}/ /.node_modules/"
 direction="$1"
 case $direction in
   init )
