@@ -21,15 +21,15 @@ trunk () {
   size="${2-1000000}"
   echo "$(tail -c $size $file)" > $file
 }
-excludes="./${project}/ /.node_modules/"
+
 direction="$1"
 case $direction in
   init )
-    rclone bisync $HOME GoogleDrive:$rclone_root/ --exclude "${excludes}" --resync --resync-mode newer --create-empty-src-dirs --slow-hash-sync-only --resilient -Mv --drive-skip-gdocs --fix-case | to_log rclone.log
+    rclone bisync $HOME GoogleDrive:$rclone_root/ --exclude "./${project}" --exclude "./node_modules/" --resync --resync-mode newer --create-empty-src-dirs --slow-hash-sync-only --resilient -Mv --drive-skip-gdocs --fix-case | to_log rclone.log
   ;;
   sync )
     ./sync.sh status
-    rclone bisync $HOME GoogleDrive:${rclone_root}/ --exclude "${ecludes}" --resilient --recover --max-lock 2m --conflict-resolve newer | to_log rclone.log
+    rclone bisync $HOME GoogleDrive:${rclone_root}/ --exclude "./${project}" --exclude "./node_modules/" --resilient --recover --max-lock 2m --conflict-resolve newer | to_log rclone.log
   ;;
   upload )
     rclone sync ~/ GoogleDrive:$rclone_root --exclude node_modules | to_log rclone.log
