@@ -71,7 +71,7 @@ systemd_dir='/lib/systemd/system/'
 Description='Sync via rclone' \
 Wants='rclone-sync.timer' \
 ExecStart="${wdir}sync.sh sync" \
-WorkingDirectory="${wdir}" \
+WorkingDirectory="${HOME}" \
 User=$USER \
 env envsubst < ./templates/general.service.tmpl > rclone-sync.service;
 sudo mv rclone-sync.service ${systemd_dir}rclone-sync.service;
