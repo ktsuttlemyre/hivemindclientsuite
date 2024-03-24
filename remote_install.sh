@@ -50,8 +50,10 @@ if ! type sshpass > /dev/null; then
   sudo apt install sshpass -y
 fi
 
-echo -n "Password to log into $pi_ip with user $pi_user"
-echo ''
+echo "Wecome to the remote installer for"
+echo "      HiveMind Client Suite       "
+echo "     Now logging into $pi_ip      "
+echo -n "User $pi_user:"
 read -s password
 echo
 #download and unzip code
