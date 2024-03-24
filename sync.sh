@@ -26,6 +26,7 @@ sync () {
   direction="$1"
   case $direction in
     init )
+      rclone mkdir GoogleDrive:${rclone_root}
       rclone bisync $HOME GoogleDrive:${rclone_root}/ --exclude-from "$HOME/$project/excludes.txt" --resync --resync-mode newer --create-empty-src-dirs --slow-hash-sync-only --resilient -Mv --drive-skip-gdocs --fix-case | to_log rclone.log
     ;;
     sync )
