@@ -8,16 +8,19 @@ prompt() {
   unattended_mode='no'
   message="$1"
   key="$2"
+  yn=''
   while true; do
     if [ "$unattended_mode" = 'yes' ]; then
     echo "unattended"
       yn="$3"
-    elif ! [ -z "$2" ] && ! [ -z "${!2}" ]; then
-    echo "secondary "
-      yn="${!2}"
-      unattended_mode='yes'
     elif [ -z "$yn" ]; then
-      read -p "$message " yn
+      if ! [ -z "$2" ] && ! [ -z "${!2}" ]; then
+        echo "secondary "
+        yn="${!2}"
+        unattended_mode='yes'
+      else
+        read -p "$message " yn
+      fi
     fi
       case $yn in
           [Yy][Ee][Ss]* )
@@ -42,6 +45,8 @@ prompt() {
           * )
           echo "Please answer yes, no, cancel or exit."
           #check if we got the answer from\tan env var
+          yn=''
+          unset yn
           if [ "$unattended_mode" = 'yes' ]; then
             echo "Invalid response."
             echo "    $2=${!2}"
