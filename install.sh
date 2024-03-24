@@ -1,22 +1,30 @@
 #!/bin/bash
 
+SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
+SCRIPT_NAME=$(basename "$0")
+echo "" > ${SCRIPT_DIR}/${SCRIPT_NAME}.prompt.history
 prompt() {
   message="$1"
+  key="$2"
   while true; do
     if ! [ -z "$2" ]; then
-      yn="$2"
+      yn="${!2}"
     else
       read -p "$message " yn
     fi
       case $yn in
           [Yy][Ee][Ss]* )
+            _prompt_history "$key" "$yn"
             return ;;
           [Nn][Oo]* )
+            _prompt_history "$key" "$yn"
             return 1 ;;
           [Cc][Aa][Nn][Cc][Ee][Ll]* )
+            _prompt_history "$key" "$yn"
             return 2 ;;
           [Ee][Xx][Ii][Tt]* )
             echo "user exit"
+            _prompt_history "$key" "$yn"
             exit 0 ;;
           * )
           echo "Please answer yes,no,cancel or exit."
@@ -32,6 +40,9 @@ prompt() {
       esac
   done
 }
+_prompt_history() {
+  echo "$1=$2"$'\n' >> ${SCRIPT_DIR}/${SCRIPT_NAME}.prompt.history
+}
 
 echo "Installing. Some of the commands will need sudo access. Please grant sudo use."
 #do a sudo command to get the password out of the way
@@ -41,7 +52,7 @@ sudo echo "Thank you for granting sudo privileges" || exit 1
 
 #Install
 sudo apt update
-if prompt "Upgrade the system?" $do_upgrade;then 
+if prompt "Upgrade the system?" 'do_upgrade';then 
   sudo apt upgrade
 fi
 
@@ -51,7 +62,7 @@ if ! type rclone > /dev/null; then
   sudo -v ; curl https://rclone.org/install.sh | sudo bash
 fi
 
-if prompt "Replace fail2ban configs?" $replace_fail2ban_configs; then
+if prompt "Replace fail2ban configs?" 'replace_fail2ban_configs'; then
   sudo cp -r ./fail2ban /etc/fail2ban
 fi
 sudo systemctl restart fail2ban
@@ -59,7 +70,7 @@ sudo systemctl restart fail2ban
 #save env vars
 env | grep '^\(tunnel\|poll\|rclone_root\|project\|wdir\|repo\)=' > .env
 
-if prompt "Add rclone configs?" $replace_rclone_configs; then
+if prompt "Add rclone configs?" 'replace_rclone_configs'; then
   env envsubst < ./templates/rclone.conf.tmpl > /$HOME/.config/rclone/rclone.conf
 fi
  
@@ -112,7 +123,7 @@ rclone mkdir GoogleDrive:${rclone_root}
 sudo chmod +x ${wdir}sync.sh
 if ${wdir}sync.sh init; then 
   echo "Thanks for installing"
-  if ! prompt "Do you wish to remain connected to the remote?"; then
+  if ! prompt "Do you wish to remain connected to the remote?" 'remain_connected'; then
     exit 0
   fi
 else
