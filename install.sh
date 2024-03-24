@@ -1,4 +1,5 @@
 #!/bin/bash
+set -x
 
 SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 SCRIPT_NAME=$(basename "$0")
@@ -9,8 +10,10 @@ prompt() {
   key="$2"
   while true; do
     if [ "$unattended_mode" = 'yes' ]; then
+    echo "unattended"
       yn="$3"
     elif ! [ -z "$2" ] && ! [ -z "${!2}" ]; then
+    echo "secondary "
       yn="${!2}"
       unattended_mode='yes'
     elif [ -z "$yn" ]; then
