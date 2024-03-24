@@ -66,6 +66,8 @@ fi
 systemd_dir='/lib/systemd/system/'
 [ ! -d $systemd_dir ] && systemd_dir='/etc/systemd/system/'
 
+env envsubst < ./templates/excludes.txt.tmpl > rclone-sync.service
+
 # https://medium.com/horrible-hacks/using-systemd-as-a-better-cron-a4023eea996d
 #add rclone sync commands to systemd
 Description='Sync via rclone' \
