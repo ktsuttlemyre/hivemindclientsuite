@@ -13,7 +13,7 @@ prompt() {
     elif ! [ -z "$2" ] && ! [ -z "${!2}" ]; then
       yn="${!2}"
       unattended_mode='yes'
-    elif ! [ -z "$yn" ]; then
+    elif [ -z "$yn" ]; then
       read -p "$message " yn
     fi
       case $yn in
