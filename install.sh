@@ -2,7 +2,7 @@
 
 SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 SCRIPT_NAME=$(basename "$0")
-echo "" > ${SCRIPT_DIR}/${SCRIPT_NAME}.prompt.history
+: > ${SCRIPT_DIR}/${SCRIPT_NAME}.prompt.history
 prompt() {
   message="$1"
   key="$2"
