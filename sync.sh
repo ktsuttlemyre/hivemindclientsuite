@@ -9,11 +9,15 @@ SEP="$(printf '%0.s-' {1..10})"
 DATE="$(TZ=EST date)"
 HR="$SEP $DATE $SEP"
 
+# https://askubuntu.com/questions/799743/how-to-insert-tabs-before-output-lines-from-a-executed-command
 to_log () {
   file="$1"
   echo "$HR" >> $file
+  exec 3>&1
+  exec 1> >(paste /dev/null -)
   cat - >> $file
-  trunk $file
+  exec 1>&3 3>&-
+  trunk $file 
 }
 
 trunk () {
