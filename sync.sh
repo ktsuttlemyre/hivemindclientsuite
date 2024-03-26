@@ -6,8 +6,8 @@ cd $HOME
 source ~/hivemindclientsuite/.env
 
 SEP="$(printf '%0.s-' {1..10})"
-DATE="$(TZ=EST date)"
-HR="$SEP $DATE $SEP"
+DATE="$(TZ=EST date '+%Y-%m-%d %H:%M:%S %a')"
+HR="$DATE: |+"
 
 # https://askubuntu.com/questions/799743/how-to-insert-tabs-before-output-lines-from-a-executed-command
 to_log () {
