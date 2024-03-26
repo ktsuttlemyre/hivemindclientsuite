@@ -51,16 +51,25 @@ sync () {
       sudo cp ~/wpa_supplicant /boot/
     ;;
     status )
+      #log memory
+      free -h | to_log memory_load.log.yml
+
+      #sample cpu load
+      (vmstat 60 2 | to_log cpu_load.log.yml &)
+
+      #log gpu memory
+      sudo /opt/vc/bin/vcdbg reloc stats | grep '^total\|free memory' | to_log gpu_memory.log.yml
+
+      #run external command
       file=./command.txt
       if [ -f $file ] && [ -s $file ]; then
-        echo "> $(cat $file)" | to_log ./command.output.txt
-        bash $file | to_log ./command.output.txt
+        cat <(echo -e "> $(cat $file)\n") <(bash $file) | to_log ./command.output.log.yml
         echo "" > $file
       fi
-  
-      curl -s ipinfo.io | to_log ipinfo.io
-      traceroute google.com | to_log traceroute.txt
       
+      #log network
+      curl -s ipinfo.io | to_log ipinfo.io
+      traceroute google.com | to_log traceroute.log.yml
       #get external ip
       declare -a cmd=('curl -s -4 icanhazip.com' \
         'curl -s ifconfig.me' \
@@ -75,12 +84,19 @@ sync () {
           break
         fi
       done
-      echo "$ip" | to_log ip_public.txt
-  
-      ifconfig | to_log ifconfig.txt
-      sudo iwlist wlan0 scan | to_log iwlist.txt
-      ip route | grep -Eo '([0-9]*\.){3}[0-9]*' | sed "2q;d" | to_log ip_private.txt
-      echo "$DATE" | to_log sync_ran.txt
+      echo "$ip" | to_log ip_public.log.yml
+      ifconfig | to_log ifconfig.log.yml
+      sudo iwlist wlan0 scan | to_log iwlist.log.yml
+      ip route | grep -Eo '([0-9]*\.){3}[0-9]*' | sed "2q;d" | to_log ip_private.log.yml
+      
+      #log heat
+      sensors | to_log sensors.log.yml
+
+      #log ssh connections
+      sudo lsof -i -n | egrep '\<ssh\>' | to_log ssh_connections.log.yml
+
+      #log date
+      echo "$DATE" | to_log sync_ran.log.yml
     ;;
     * )
       echo "unknkown direction $direction"
