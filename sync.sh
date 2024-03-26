@@ -8,10 +8,11 @@ source ~/hivemindclientsuite/.env
 SEP="$(printf '%0.s-' {1..10})"
 DATE="$(TZ=EST date '+%Y-%m-%d %H:%M:%S %a')"
 HR="$DATE: |+"
+log_dir=./logs/
 
 # https://askubuntu.com/questions/799743/how-to-insert-tabs-before-output-lines-from-a-executed-command
 to_log () {
-  file="$1"
+  file="${log_dir}$1"
   echo "$HR" >> $file
   exec 3>&1
   exec 1> >(paste /dev/null -)
@@ -35,10 +36,10 @@ sync () {
     ;;
     sync )
       sync status
-      rclone bisync $HOME GoogleDrive:${rclone_root}/ --exclude-from "$HOME/$project/excludes.txt"--resilient --recover --max-lock 2m --conflict-resolve newer | to_log rclone.log
+      rclone bisync $HOME GoogleDrive:${rclone_root}/ --exclude-from "$HOME/$project/excludes.txt"--resilient --recover --max-lock 2m --conflict-resolve newer | to_log rclone.log.yml
     ;;
     upload )
-      rclone sync ~/ GoogleDrive:$rclone_root --exclude node_modules | to_log rclone.log
+      rclone sync ~/ GoogleDrive:$rclone_root --exclude node_modules | to_log rclone.log.yml
     ;;
     download )
     if rclone sync GoogleDrive:$rclone_root ~/ --exclude node_modules; then #if 0 successful and files changed, 9 is successfull no file change
