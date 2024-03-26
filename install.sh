@@ -73,7 +73,13 @@ if prompt "Upgrade the system?" 'do_upgrade';then
   sudo apt upgrade
 fi
 
-sudo apt install unattended-upgrades fail2ban -y && sudo apt autoremove
+sudo apt install -y \
+  unattended-upgrades \
+  fail2ban \
+  lm-sensors \
+  && sudo apt autoremove
+
+sudo sensors-detect --auto
 
 if ! type rclone > /dev/null; then
   sudo -v ; curl https://rclone.org/install.sh | sudo bash
