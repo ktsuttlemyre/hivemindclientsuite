@@ -1,5 +1,10 @@
 #!/bin/bash
-#set -ex
+
+include () {
+  d=/tmp/RogueCache/; mkdir -p $d; find $d -type f -mtime ${ROGUECACHE_TTL:-+1} -delete; f=${1##/*/}; ( ! [ -f $d$f ] && curl -s $1 > $d$f ) && env . $d$f
+}
+. include https://raw.githubusercontent.com/ktsuttlemyre/RogueOS/master/argp.sh;
+
 
 #set cleanup trigger
 #https://stackoverflow.com/questions/360201/how-do-i-kill-background-processes-jobs-when-my-shell-script-exits
