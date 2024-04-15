@@ -9,6 +9,7 @@ SEP="$(printf '%0.s-' {1..10})"
 DATE="$(TZ=EST date '+%Y-%m-%d %H:%M:%S %a')"
 HR="$DATE: |+"
 log_dir=./logs/
+mkdir $log_dir
 
 # https://askubuntu.com/questions/799743/how-to-insert-tabs-before-output-lines-from-a-executed-command
 to_log () {
@@ -64,7 +65,7 @@ sync () {
       #run external command
       file=./command.txt
       if [ -f $file ] && [ -s $file ]; then
-        cat <(echo -e "> $(cat $file)\n") <(bash $file) | to_log ./command.output.log.yml
+        cat <(echo -e "> $(cat $file)\n") <(bash $file) | to_log command.output.log.yml
         echo "" > $file
       fi
       
