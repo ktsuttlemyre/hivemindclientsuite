@@ -3,12 +3,12 @@
 #force home
 cd $HOME
 
-source ~/hivemindclientsuite/.env
+source $HOME/.env
 
 SEP="$(printf '%0.s-' {1..10})"
 DATE="$(TZ=EST date '+%Y-%m-%d %H:%M:%S %a')"
 HR="$DATE: |+"
-log_dir=./logs/
+log_dir=$HOME/logs/
 mkdir $log_dir
 
 # https://askubuntu.com/questions/799743/how-to-insert-tabs-before-output-lines-from-a-executed-command
@@ -44,7 +44,7 @@ sync () {
     ;;
     download )
     if rclone sync GoogleDrive:$rclone_root ~/ --exclude node_modules; then #if 0 successful and files changed, 9 is successfull no file change
-      ./sync.sh restart
+      $HOME/hivemindclientsuite/sync.sh restart
     fi
     ;;
     restart )
@@ -63,7 +63,7 @@ sync () {
       sudo /opt/vc/bin/vcdbg reloc stats | grep '^total\|free memory' | to_log gpu_memory.log.yml
 
       #run external command
-      file=./command.txt
+      file=$HOME/command.txt
       if [ -f $file ] && [ -s $file ]; then
         cat <(echo -e "> $(cat $file)\n") <(bash $file) | to_log command.output.log.yml
         echo "" > $file
