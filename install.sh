@@ -77,6 +77,7 @@ sudo apt install -y \
   unattended-upgrades \
   fail2ban \
   lm-sensors \
+  lsof \
   && sudo apt autoremove
 
 sudo sensors-detect --auto
