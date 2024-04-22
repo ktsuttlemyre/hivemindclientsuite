@@ -70,7 +70,7 @@ sudo echo "Thank you for granting sudo privileges" || exit 1
 #Install
 sudo apt update
 if prompt "Upgrade the system?" 'do_upgrade';then 
-  sudo apt upgrade
+  sudo apt upgrade -y
 fi
 
 sudo apt install -y \
