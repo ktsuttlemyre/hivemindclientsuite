@@ -96,7 +96,8 @@ sudo systemctl restart fail2ban
 env | grep '^\(tunnel\|poll\|rclone_root\|project\|wdir\|repo\)=' > $HOME/.env
 
 if prompt "Add rclone configs?" 'replace_rclone_configs'; then
-  env envsubst < ./templates/rclone.conf.tmpl > /$HOME/.config/rclone/rclone.conf
+  mkdir -p $HOME/.config/rclone
+  env envsubst < ./templates/rclone.conf.tmpl > $HOME/.config/rclone/rclone.conf
 fi
  
 systemd_dir='/lib/systemd/system/'
