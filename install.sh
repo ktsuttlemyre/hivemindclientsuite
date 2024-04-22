@@ -77,9 +77,10 @@ sudo apt install -y \
   unattended-upgrades \
   fail2ban \
   lm-sensors \
-  rclone \
   lsof \
   && sudo apt autoremove
+
+sudo -v ; curl https://rclone.org/install.sh | sudo bash
 
 sudo sensors-detect --auto
 
