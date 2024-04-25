@@ -27,7 +27,7 @@ trunk () {
   size="${2-1000000}"
   echo "$(tail -c $size $file)" > $file
 }
-
+rclone_root="hosts/${rclone_root}"
 sync () {
   direction="$1"
   case $direction in
